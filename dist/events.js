@@ -47,14 +47,13 @@ class EventDispatcher {
     }
     dispatch(event) {
         const listeners = this.listenerMap.get(event.constructor);
-        if (!listeners) {
-            return;
-        }
-        for (let i = 0; i < listeners.length; i += 1) {
-            const listener = listeners[i];
-            listener(event);
-            if (event.cancelled) {
-                break;
+        if (listeners) {
+            for (let i = 0; i < listeners.length; i += 1) {
+                const listener = listeners[i];
+                listener(event);
+                if (event.cancelled) {
+                    break;
+                }
             }
         }
         return !(event.cancelled || event.defaultPrevented);
