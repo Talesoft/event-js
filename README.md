@@ -36,7 +36,7 @@ dispatcher.addListener(ClickEvent, () => {
     console.log('Clicked!');
 });
 
-dispatcher.dispatcher(new ClickEvent());
+dispatcher.dispatch(new ClickEvent());
 ```
 
 ### Passing Event Data
@@ -56,7 +56,7 @@ dispatcher.addListener(ResponseEvent, event => {
 
 const event = new ResponseEvent();
 
-dispatcher.dispatcher(event);
+dispatcher.dispatch(event);
 
 console.log(event.content); // "Hello from Response!"
 ```
@@ -86,7 +86,7 @@ dispatcher.addListener(WalkEvent, () => {
 
 const event = new WalkEvent();
 
-const success = dispatcher.dispatcher(event);
+const success = dispatcher.dispatch(event);
 
 console.log(success); // false
 
