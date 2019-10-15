@@ -15,11 +15,22 @@
         "type": "git"
     },
     "author": {
-        "name": "Torben Köhn",
-        "email": "t.koehn@outlook.com",
+        "name": "Talesoft",
+        "email": "info@talesoft.codes",
         "url": "https://talesoft.codes"
     },
-    "contributors": [],
+    "contributors": [
+        {
+            "name": "Simone Krügel",
+            "email": "simone@talesoft.codes",
+            "url": "https://github.com/SimoneKruegel"
+        },
+        {
+            "name": "Torben Köhn",
+            "email": "torben@talesoft.codes",
+            "url": "https://github.com/TorbenKoehn"
+        }
+    ],
     "bugs": {
         "url": "https://github.com/Talesoft/event-js/issues",
         "email": "t.koehn@outlook.com"
