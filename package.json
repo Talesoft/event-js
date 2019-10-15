@@ -1,8 +1,10 @@
 {
     "name": "@talesoft/event",
-    "description": "A simplistic event library not bound to the DOM",
+    "description": "A minimalistic event library not bound to the DOM",
     "keywords": [
-        "event"
+        "event",
+        "dispatcher",
+        "event-dispatcher"
     ],
     "version": "0.1.0",
     "main": "dist/index.js",
@@ -33,7 +35,7 @@
     ],
     "bugs": {
         "url": "https://github.com/Talesoft/event-js/issues",
-        "email": "t.koehn@outlook.com"
+        "email": "info@talesoft.codes"
     },
     "scripts": {
         "build": "tsc",
