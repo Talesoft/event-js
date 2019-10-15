@@ -1,59 +1,122 @@
-BEM JS
-=======
+Event JS
+========
 
-[![Build status](https://img.shields.io/travis/talesoft/bem-js/master.svg?style=flat-square)](https://travis-ci.org/talesoft/bem-js)
-[![Coverage](https://img.shields.io/codeclimate/coverage/Talesoft/bem-js.svg)](https://codecov.io/github/Talesoft/bem-js?branch=master)
-[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/@talesoft/bem.svg)](https://snyk.io/package/npm/@talesoft/bem)
+[![Build status](https://img.shields.io/travis/talesoft/event-js/master.svg?style=flat-square)](https://travis-ci.org/talesoft/event-js)
+[![Coverage](https://img.shields.io/codeclimate/coverage/Talesoft/event-js.svg)](https://codecov.io/github/Talesoft/event-js?branch=master)
+[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/@talesoft/event.svg)](https://snyk.io/package/npm/@talesoft/event)
 
-A small [BEM](http://getbem.com/introduction/) helper function.
+A minimalistic implementation of the event pattern.
+
 
 Installation
 ------------
 
 ```bash
-npm i @talesoft/bem
+npm i @talesoft/event
 ```
 
 TypeScript supported out-of-the-box.
 
+
 Usage
 -----
 
+The library comes with a base class `Event` that will represent any kind of event
+you want to hook and with an `EventDispatcher` that will manage listeners for events
+and dispatch event instances to these listeners.
+
 ```js
-import bem from '@talesoft/bem';
+import { Event, EventDispatcher } from '@talesoft/event';
 
-// Define a Block
-const b = bem('MyComponent');
+const dispatcher = new EventDispatcher();
 
-// Get the class name of the block
-b();                                           // "MyComponent"
+class ClickEvent extends Event {}
 
-// First argument defines Modifiers
-b({ active: true });                           // "MyComponent MyComponent--active"
-b({ colorMode: 'dark' });                      // "MyComponent MyComponent--color-mode-dark"
+dispatcher.addListener(ClickEvent, () => {
+    console.log('Clicked!');
+});
 
-// Second argument defines Global Modifiers
-b({}, { active: true });                       // "MyComponent --active"
-b({}, { colorMode: 'dark' });                  // "MyComponent --color-mode-dark"
-
-// Create quick Elements with the e() method
-b.e('my-element');                             // "MyComponent__my-element"
-
-// Second argument are Modifiers
-b.e('my-element', { active: true });           // "MyComponent__my-element MyComponent__my-element--active"
-b.e('my-element', { colorMode: 'dark' });      // "MyComponent__my-element MyComponent__my-element--color-mode-dark"
-
-// Third argument are Global Modifiers
-b.e('my-element', {}, { active: true });       // "MyComponent --active"
-b.e('my-element', {}, { colorMode: 'dark' });  // "MyComponent --color-mode-dark"
-
-// To DRY, use the createElement() method
-const myElement = b.createElement('my-element');
-
-myElement({ active: true });                   // "MyComponent__my-element MyComponent__my-element--active"
-myElement({ colorMode: 'dark' });              // "MyComponent__my-element MyComponent__my-element--color-mode-dark"
-
+dispatcher.dispatcher(new ClickEvent());
 ```
+
+### Passing Event Data
+
+```js
+import { Event, EventDispatcher } from '@talesoft/event';
+
+const dispatcher = new EventDispatcher();
+
+class ResponseEvent extends Event {
+    public content: string = '';
+}
+
+dispatcher.addListener(ResponseEvent, event => {
+    event.content = 'Hello from Response!';
+});
+
+const event = new ResponseEvent();
+
+dispatcher.dispatcher(event);
+
+console.log(event.content); // "Hello from Response!"
+```
+
+### Cancelling events
+
+```js
+import { Event, EventDispatcher } from '@talesoft/event';
+
+const dispatcher = new EventDispatcher();
+
+class WalkEvent extends Event {}
+
+dispatcher.addListener(WalkEvent, () => {
+    console.log('I will be called!');
+});
+
+dispatcher.addListener(WalkEvent, event => {
+    console.log('I will be called, too!');
+
+    event.cancel();
+});
+
+dispatcher.addListener(WalkEvent, () => {
+    console.log('I won\'t be called anymore.');
+});
+
+const event = new WalkEvent();
+
+const success = dispatcher.dispatcher(event);
+
+console.log(success); // false
+
+console.log(event.cancelled); // true
+```
+
+### Default action prevention
+
+```js
+import { Event, EventDispatcher } from '@talesoft/event';
+
+const dispatcher = new EventDispatcher();
+
+class ClickEvent extends Event {}
+
+dispatcher.addListener(ClickEvent, event => {
+    event.preventDefault();
+    // This is the only thing that will happen, as we'll prevent the default dispatch action
+    window.location.href = 'http://other.example.com';
+});
+
+const event = new ClickEvent();
+if (dispatcher.dispatch(event)) {
+    // This won't happen, as dispatch will return false when the default action was prevented
+    window.location.href = 'http://example.com';
+}
+
+console.log(event.defaultPrevented); // true
+```
+
 
 Contributing
 ------------
@@ -64,10 +127,10 @@ Requires: [npm][nodejs-download]
 
 ```bash
 // Pull project
-git clone https://github.com/Talesoft/tick-js
+git clone https://github.com/Talesoft/event-js
 
 // Enter project directory
-cd geometry-js
+cd event-js
 
 // Install development dependencies
 npm install
@@ -89,8 +152,5 @@ npm run build
 // ... create branch, commit, push, merge request etc. ...
 ```
 
-[contribution-guidelines]: https://github.com/Talesoft/bem/blob/master/CONTRIBUTING.md
+[contribution-guidelines]: https://github.com/Talesoft/event-js/blob/master/CONTRIBUTING.md
 [nodejs-download]: https://nodejs.org/en/
-
-
-
