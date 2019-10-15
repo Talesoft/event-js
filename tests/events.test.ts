@@ -91,4 +91,4 @@ describe('EventDispatcher', () => {
             expect(listener).toHaveBeenCalledTimes(0c);
         });
     });
-}
+});
