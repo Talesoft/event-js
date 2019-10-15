@@ -47,7 +47,7 @@ class EventDispatcher {
     }
     dispatch(event) {
         const listeners = this.listenerMap.get(event.constructor);
-        if (listeners) {
+        if (listeners && !event.cancelled) {
             for (let i = 0; i < listeners.length; i += 1) {
                 const listener = listeners[i];
                 listener(event);

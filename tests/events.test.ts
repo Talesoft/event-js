@@ -90,5 +90,24 @@ describe('EventDispatcher', () => {
             dispatcher.dispatch(otherEvent);
             expect(listener).toHaveBeenCalledTimes(0);
         });
+        it('should not call further listeners if the event was cancelled', () => {
+            const dispatcher = new EventDispatcher();
+            const listener1 = jest.fn();
+            const listener2 = (ev: TestEvent) => {
+                ev.cancel();
+            };
+            const listener3 = jest.fn();
+            const event = new TestEvent();
+            dispatcher.addListener(TestEvent, listener1);
+            dispatcher.addListener(TestEvent, listener2);
+            dispatcher.addListener(TestEvent, listener3);
+            dispatcher.dispatch(event);
+            expect(listener1).toHaveBeenCalledTimes(1);
+            expect(listener3).toHaveBeenCalledTimes(0);
+            dispatcher.dispatch(event);
+            expect(listener1).toHaveBeenCalledTimes(1);
+            expect(listener3).toHaveBeenCalledTimes(0);
+            // dispatcher.removeListener(TestEvent, listener2);
+        });
     });
 });
