@@ -13,7 +13,7 @@ export abstract class Event {
         return this[cancelledSymbol];
     }
 
-    get defaultPrevented(){
+    get defaultPrevented() {
         return this[defaultPreventedSymbol];
     }
 
