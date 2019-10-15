@@ -51,7 +51,7 @@ export class EventDispatcher {
 
     public dispatch<T extends Event>(event: T) {
         const listeners = this.listenerMap.get(event.constructor as EventConstructor<T>);
-        if (listeners) {
+        if (listeners && !event.cancelled) {
             for (let i = 0; i < listeners.length; i += 1) {
                 const listener = listeners[i];
                 listener(event);
