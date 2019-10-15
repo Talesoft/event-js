@@ -88,7 +88,7 @@ describe('EventDispatcher', () => {
             const listener = jest.fn();
             dispatcher.addListener(TestEvent, listener);
             dispatcher.dispatch(otherEvent);
-            expect(listener).toHaveBeenCalledTimes(0);
+            expect(listener).toHaveBeenCalledTimes(0c);
         });
     });
-});
+}
